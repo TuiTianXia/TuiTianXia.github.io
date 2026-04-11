@@ -1,17 +1,16 @@
-name: Deploy Docusaurus to GitHub Pages
-
+name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
 
-# 给 Actions 完整的 Pages 部署权限，根治 exit 128
+# 🔴 核心权限配置：给Actions完整读写权限，根治exit 128
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# 绑定 GitHub Pages 官方环境
+# 绑定GitHub Pages官方环境
 environment:
   name: github-pages
   url: ${{ steps.deployment.outputs.page_url }}
@@ -23,6 +22,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
+          # 🔴 核心：完整克隆所有Git历史，解决浅克隆导致的exit 128
           fetch-depth: 0
 
       - name: Setup Node.js
